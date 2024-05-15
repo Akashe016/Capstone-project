@@ -10,11 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-@Getter
-@Setter
 @Entity
 public class Invoice {
 
