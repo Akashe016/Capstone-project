@@ -1,14 +1,15 @@
 package com.example.invoicegenerationapplication.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.example.invoicegenerationapplication.dto.AccountDTO;
 import com.example.invoicegenerationapplication.entity.Account;
 import com.example.invoicegenerationapplication.repository.AccountRepository;
 import com.example.invoicegenerationapplication.service.AccountService;
-
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -17,75 +18,76 @@ public class AccountServiceImpl implements AccountService {
 	AccountRepository accountRepository;
 	
 	@Override
-	public String singup(Account account) {
+	public String singUp(AccountDTO accountDTO) {
 		
+		Account account =  new Account();
+		
+		account.setUserName(accountDTO.getUserName());
+		account.setEmail(accountDTO.getEmail());
+		account.setPassword(accountDTO.getPassword());
 				
-		if(checkFindByUserNameAndEmail(account.getUsername(), account.getEmail())) {
+		if(checkFindByUserNameAndEmail(account.getUserName(), account.getEmail())) {
 			
 			accountRepository.save(account);
 	
-			return "your account create successfully" ;
+			return "Your account create successfully" ;
 		}
 		
 		else {
-			return "your account already created, Go back to login";
+			return "Your account already created, Go back to login";
 		}
 	}
 		
-		
-		@Override
-		public String singIn(String username, String password) {
+	@Override
+	public Map<String, String> singIn(String userName, String password) {
 			
 			
-			if(checkfindOnlyNameAndPassword(username, password)) {
+		Map<String, String> response = new HashMap<>();    
+
+		Optional<Account> user = accountRepository.findByUserNameAndPassword(userName, password);
 			
-				return "Login Successfully";		
-			}
-			else {
+		if(user.isPresent()) {
 				
-				return "login falied!";
-			}
-		}
-		
-		private boolean checkfindOnlyNameAndPassword(String username, String password) {
+			Account users = user.get();
+	        Long id = users.getId();
+		            		            
+	        response.put( "Login Successfully", String.valueOf(id));
+			return response;
 			
-			Optional<Account> user = accountRepository.findByUsernameAndPassword(username, password);
-			
-			return user.isPresent();
-					
 		}
+		else {
+				
+			response.put(  "Login falied!", null);
+				
+			return response;
+		}
+	}
 		
-		public boolean checkFindByUserNameAndEmail(String username, String email) {
+	public boolean checkFindByUserNameAndEmail(String userName, String email) {
+			
+		Optional<Account> users = accountRepository.findByUserNameAndEmail(userName, email);		
+			
+		if(users.isPresent()) {
+		
+			return false;
+		}
+		else {
 	
-			
-			List<Account> user = accountRepository.findByUsernameAndEmail(username,email);
-
-			if(user.isEmpty()) {
-
-				return true;
-			}
-			else {
-
-				Object s=user.get(0);
-				String s1 = String.valueOf(s);	
-				String split[] = s1.split(",");
-				
-				String c[] = new String[split.length];
-								
-				for(int i=0;i<split.length;i++) {
-				
-					String a = split[i];	
-					String split1[] = a.split("=");
-					c[i]= split1[1];
-				}
-				if(c[1].equals(username) && c[2].equals(email)) {
-					
-					return false;
-				}
-				else {
-					
-					return true;
-				}
-			}
+			return true;						
 		}
+	}
+
+
+	@Override
+	public Optional<Account> getIdAccount(Long id) {
+			
+		return accountRepository.findById(id);
+	}
+
+
+	@Override
+	public List<Account> getAllAccount() {
+			
+		return accountRepository.findAll();
+	}
 }

@@ -1,27 +1,18 @@
-package com.example.invoicegenerationapplication.entity;
+package com.example.invoicegenerationapplication.dto;
 
 import java.time.LocalDate;
 import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 
-@Entity
-public class Account {
+public class AccountDTO {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	
 	private Long id;
 	
 	@NotBlank(message = "UserName is mandatory")
-	@Column(name="username",unique = true)
+	@Column(name="username" ,unique = true)
 	private String userName;
 	 
 	@NotBlank(message = "Email is mandatory")
@@ -34,9 +25,7 @@ public class Account {
 	@CreationTimestamp	
 	private LocalDate date;
 	
-    @JsonIgnore
-	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-	private List<Invoice> invoice;
+	private List<InvoiceDTO> invoice;
 	
 	public Long getId() {
 		return id;
@@ -62,21 +51,17 @@ public class Account {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
 	public LocalDate getDate() {
 		return date;
 	}
 	public void setDate(LocalDate date) {
 		this.date = date;
 	}
-	public List<Invoice> getInvoice() {
+	public List<InvoiceDTO> getInvoice() {
 		return invoice;
 	}
-	public void setInvoice(List<Invoice> invoice) {
+	public void setInvoice(List<InvoiceDTO> invoice) {
 		this.invoice = invoice;
-	}
-	
-	@Override 
-	public String toString() { 
-		return "id=" + id +", username=" + userName + ", email=" + email + ", password=" + password +", date=" + date; 
 	}
 }

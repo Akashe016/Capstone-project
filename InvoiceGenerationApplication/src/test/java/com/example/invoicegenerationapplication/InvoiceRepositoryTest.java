@@ -3,9 +3,11 @@ package com.example.invoicegenerationapplication;
 import com.example.invoicegenerationapplication.entity.Invoice;
 import com.example.invoicegenerationapplication.repository.InvoiceRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -14,56 +16,77 @@ public class InvoiceRepositoryTest {
 
     @Autowired
     private InvoiceRepository invoiceRepository;
-	
+
+    private Invoice invoice;
+
+    @BeforeEach
+    public void setUp() {
+        invoice = new Invoice();
+        invoice.setClientName("Akash");
+        invoice.setAmount(3000.0);
+        invoice.setDate("2023-05-14");
+        invoice.setDescription("description");
+    }
 
     @Test
     public void testSaveInvoice() {
-    	
-    	Invoice invoice = new Invoice();
-        invoice.setClientName("Akash");
-        invoice.setAmount(100.0);
-        invoice.setDate("2023-05-14");
-        invoice.setDescription("description");
-        invoiceRepository.save(invoice);
-        Assertions.assertThat(invoice.getId()).isGreaterThan(0);
+        Invoice savedInvoice = invoiceRepository.save(invoice);
+        Assertions.assertThat(savedInvoice.getId()).isGreaterThan(0);
     }
 
     @Test
     public void testFindById() {
-		
-        Invoice invoice = invoiceRepository.findById(2L).get();
-        Assertions.assertThat(invoice.getId()).isEqualTo(2L);
+        Invoice savedInvoice = invoiceRepository.save(invoice);
+        Optional<Invoice> foundInvoice = invoiceRepository.findById(savedInvoice.getId());
+        Assertions.assertThat(foundInvoice).isPresent();
+        Assertions.assertThat(foundInvoice.get().getId()).isEqualTo(savedInvoice.getId());
     }
 
     @Test
     public void testFindAll() {
-
+        invoiceRepository.save(invoice);
         List<Invoice> invoices = invoiceRepository.findAll();
         Assertions.assertThat(invoices.size()).isGreaterThan(0);
     }
 
     @Test
     public void testUpdateInvoice() {
-    	Invoice invoice = invoiceRepository.findById(2L).get();
+        Invoice savedInvoice = invoiceRepository.save(invoice);
 
-    	invoice.setClientName("E Akash");
-        Invoice updatedInvoice = invoiceRepository.save(invoice);
+        savedInvoice.setClientName("E Akash");
+        Invoice updatedInvoice = invoiceRepository.save(savedInvoice);
         Assertions.assertThat(updatedInvoice.getClientName()).isEqualTo("E Akash");
     }
 
     @Test
     public void testDeleteById() {
-    	
-    	Invoice invoice = invoiceRepository.findById(2L).get();
-    	invoiceRepository.delete(invoice);
-        Invoice invoice1 = null;
+        Invoice savedInvoice = invoiceRepository.save(invoice);
 
-        Optional<Invoice> optionalInvoice = invoiceRepository.findByClientName("E Akash");
+        invoiceRepository.deleteById(savedInvoice.getId());
 
-        if(optionalInvoice.isPresent()){
-        	invoice1 = optionalInvoice.get();
-        }
-
-        Assertions.assertThat(invoice1).isNull();    
+        Optional<Invoice> deletedInvoice = invoiceRepository.findById(savedInvoice.getId());
+        Assertions.assertThat(deletedInvoice).isNotPresent();
     }
+
+    @Test
+    public void testEmpty() {
+        Long nonExistingInvoiceId = 999L;
+        Optional<Invoice> foundInvoice = invoiceRepository.findById(nonExistingInvoiceId);
+        Assertions.assertThat(foundInvoice).isNotPresent();
+    }
+
+	/*
+	 * @Test public void testBlank() { Invoice savedInvoice =
+	 * invoiceRepository.save(invoice);
+	 * 
+	 * Optional<Invoice> optionalInvoice =
+	 * invoiceRepository.findById(savedInvoice.getId());
+	 * Assertions.assertThat(optionalInvoice).isPresent();
+	 * 
+	 * Invoice invoiceToUpdate = optionalInvoice.get();
+	 * invoiceToUpdate.setClientName(" "); Invoice updatedInvoice =
+	 * invoiceRepository.save(invoiceToUpdate);
+	 * 
+	 * Assertions.assertThat(updatedInvoice.getClientName()).isEqualTo(" "); }
+	 */
 }

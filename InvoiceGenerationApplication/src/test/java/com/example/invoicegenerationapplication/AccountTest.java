@@ -17,31 +17,18 @@ class AccountTest {
     private Account account;
 
     @Test
-    void testAccount() {
-        account.setUser_id(1);
-        account.setUsername("username");
+    void testAccountGetterAndSetter() {
+        account.setId(1L);
+        account.setUserName("username");
         account.setEmail("example@gmail.com");
         account.setPassword("password");
         LocalDate currentDate = LocalDate.now();
         account.setDate(currentDate);
 
-        assertEquals(1, account.getUser_id());
-        assertEquals("username", account.getUsername());
+        assertEquals(1, account.getId());
+        assertEquals("username", account.getUserName());
         assertEquals("example@gmail.com", account.getEmail());
         assertEquals("password", account.getPassword());
         assertEquals(currentDate, account.getDate());
-    }
-
-    @Test
-    void testToString() {
-        account.setUser_id(1);
-        account.setUsername("username");
-        account.setEmail("example@gmail.com");
-        account.setPassword("password");
-        LocalDate currentDate = LocalDate.now();
-        account.setDate(currentDate);
-
-        String expectedString = "user_id=1, username=username, email=example@gmail.com, password=password, date=" + currentDate;
-        assertEquals(expectedString, account.toString());
     }
 }
