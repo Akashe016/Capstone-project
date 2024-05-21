@@ -49,7 +49,6 @@ public class AccountController {
 		try {
 	 	   
 	    	Map<String, String> response = accountService.singIn(username, password);
-	    	System.out.println(response);
 	        return ResponseEntity.ok(response);
 	    }
 	 	catch (Exception e) {

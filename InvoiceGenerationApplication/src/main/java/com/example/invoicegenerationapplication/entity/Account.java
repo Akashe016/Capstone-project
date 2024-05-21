@@ -75,8 +75,8 @@ public class Account {
 		this.invoice = invoice;
 	}
 	
-	@Override 
-	public String toString() { 
-		return "id=" + id +", username=" + userName + ", email=" + email + ", password=" + password +", date=" + date; 
-	}
+	/*
+	 * @Override public String toString() { return "id=" + id +", username=" +
+	 * userName + ", email=" + email + ", password=" + password +", date=" + date; }
+	 */
 }

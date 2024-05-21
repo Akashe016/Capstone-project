@@ -20,7 +20,7 @@ public class InvoiceRepositoryTest {
     private Invoice invoice;
 
     @BeforeEach
-    public void setUp() {
+    public void data() {
         invoice = new Invoice();
         invoice.setClientName("Akash");
         invoice.setAmount(3000.0);
@@ -74,19 +74,4 @@ public class InvoiceRepositoryTest {
         Optional<Invoice> foundInvoice = invoiceRepository.findById(nonExistingInvoiceId);
         Assertions.assertThat(foundInvoice).isNotPresent();
     }
-
-	/*
-	 * @Test public void testBlank() { Invoice savedInvoice =
-	 * invoiceRepository.save(invoice);
-	 * 
-	 * Optional<Invoice> optionalInvoice =
-	 * invoiceRepository.findById(savedInvoice.getId());
-	 * Assertions.assertThat(optionalInvoice).isPresent();
-	 * 
-	 * Invoice invoiceToUpdate = optionalInvoice.get();
-	 * invoiceToUpdate.setClientName(" "); Invoice updatedInvoice =
-	 * invoiceRepository.save(invoiceToUpdate);
-	 * 
-	 * Assertions.assertThat(updatedInvoice.getClientName()).isEqualTo(" "); }
-	 */
 }
