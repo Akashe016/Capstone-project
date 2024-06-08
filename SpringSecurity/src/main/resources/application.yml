@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: Akash
+
+
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: 1dccc2749ff6d1d4eecd
+            clientSecret: 96008eaa9f02a5aea98e01920683d309dcdcdf08
+            
+server:
+  port: 8092
+
+
+
+
+
+
+
