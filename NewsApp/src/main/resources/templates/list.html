@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Users</title>
+    <link rel="stylesheet" th:href="@{../listcss.css}">
+</head>
+<body>
+
+<div class="container">
+    
+    <h1>LIST OF NEWS</h1>
+    
+    <table border="2">
+    
+        <tr>
+            <th>ID</th>
+            <th>CATEGORY</th>
+            <th>DESCRIPTION</th>
+        </tr>
+        <tr th:each="user : ${list}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.category}"></td>
+            <td th:text="${user.description}"></td>
+        </tr>
+    </table>
+    <br>
+    <div class="link">
+        <a href="addnews">Add News</a>
+    </div>
+ 
+</div>
+</body>
+</html>

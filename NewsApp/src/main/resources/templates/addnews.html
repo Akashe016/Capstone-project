@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add News</title>
+    <link rel="stylesheet" th:href="@{../addcss.css}">
+</head>
+<body>
+   <div class="container">
+   
+   	<h1>ADD NEWS</h1>
+    <form action="/addnews" method="post">
+    
+    	<div>
+    		<label for="id">SI NO :</label>
+        </div>
+        <input type="number" id="id" name="id">	
+        	
+        <div>
+        	<label for="category">News Category:</label>
+        </div>
+        <input type="text" id="category" name="category">
+        		
+        <div>
+        	<label for="description">News Description:</label>
+        </div>
+        <textarea id="description" name="description" rows="4" cols="50"></textarea>
+        	
+        <button type="submit">Save</button>        
+        
+    </form>
+    
+    <div class="link">
+    	<a href="list">Back to News List</a>  
+    </div>  
+  
+  </div>
+</body>
+</html>
